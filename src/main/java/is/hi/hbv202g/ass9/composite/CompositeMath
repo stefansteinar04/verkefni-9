@@ -1,0 +1,82 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Component interface
+interface Expression {
+    int getResult();
+}
+
+// Leaf class representing a number
+class NumberLeaf implements Expression {
+    private int value;
+
+    public NumberLeaf(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public int getResult() {
+        return value;
+    }
+}
+
+// Composite class for addition
+class PlusComposite implements Expression {
+    private List<Expression> children = new ArrayList<>();
+
+    public void add(Expression expression) {
+        children.add(expression);
+    }
+
+    @Override
+    public int getResult() {
+        int result = 0;
+        for (Expression expression : children) {
+            result += expression.getResult();
+        }
+        return result;
+    }
+}
+
+// Composite class for multiplication
+class MultiplyComposite implements Expression {
+    private List<Expression> children = new ArrayList<>();
+
+    public void add(Expression expression) {
+        children.add(expression);
+    }
+
+    @Override
+    public int getResult() {
+        int result = 1;
+        for (Expression expression : children) {
+            result *= expression.getResult();
+        }
+        return result;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Creating a mathematical expression: (4 + 5) * 3
+
+        // Leaf nodes representing numbers
+        NumberLeaf num1 = new NumberLeaf(4);
+        NumberLeaf num2 = new NumberLeaf(5);
+        NumberLeaf num3 = new NumberLeaf(3);
+
+        // Composite node for addition
+        PlusComposite plusComposite = new PlusComposite();
+        plusComposite.add(num1);
+        plusComposite.add(num2);
+
+        // Composite node for multiplication
+        MultiplyComposite multiplyComposite = new MultiplyComposite();
+        multiplyComposite.add(plusComposite);
+        multiplyComposite.add(num3);
+
+        // Getting the result
+        int result = multiplyComposite.getResult();
+        System.out.println("(4 + 5) * 3 = " + result); // Output should be 27
+    }
+}
