@@ -1,0 +1,46 @@
+package is.hi.hbv202g.ass9.compositeObservedTemplateMethod;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Abstract superclass for Composite classes
+public abstract class CompositeExpression extends ObservableExpression implements MathExpression {
+    protected List<MathExpression> children = new ArrayList<>();
+
+    public void add(MathExpression expression) {
+        children.add(expression);
+    }
+
+    public List<MathExpression> getChildren() {
+        return children;
+    }
+
+    @Override
+    public void setValue(int value) {
+        // No action needed for CompositeExpression
+    }
+}
+
+// PlusComposite class
+public class PlusComposite extends CompositeExpression {
+    @Override
+    public int getResult() {
+        int result = 0;
+        for (MathExpression expression : children) {
+            result += expression.getResult();
+        }
+        return result;
+    }
+}
+
+// MultiplyComposite class
+public class MultiplyComposite extends CompositeExpression {
+    @Override
+    public int getResult() {
+        int result = 1;
+        for (MathExpression expression : children) {
+            result *= expression.getResult();
+        }
+        return result;
+    }
+}
