@@ -1,0 +1,75 @@
+package is.hi.hbv202g.ass9.compositeObserved;
+
+import java.util.Observable;
+
+// Abstract class representing an observable object
+public abstract class ObservableExpression extends Observable {
+    public abstract void setValue(int value);
+}
+
+// Leaf class representing a number
+public class NumberLeaf extends ObservableExpression implements MathExpression {
+    private int value;
+
+    public NumberLeaf(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public int getResult() {
+        return value;
+    }
+
+    @Override
+    public void setValue(int value) {
+        this.value = value;
+        setChanged();
+        notifyObservers(value);
+    }
+}
+
+// Composite class for addition
+public class PlusComposite extends ObservableExpression implements MathExpression {
+    private List<MathExpression> children = new ArrayList<>();
+
+    public void add(MathExpression expression) {
+        children.add(expression);
+    }
+
+    @Override
+    public int getResult() {
+        int result = 0;
+        for (MathExpression expression : children) {
+            result += expression.getResult();
+        }
+        return result;
+    }
+
+    @Override
+    public void setValue(int value) {
+        // No action needed for PlusComposite
+    }
+}
+
+// Composite class for multiplication
+public class MultiplyComposite extends ObservableExpression implements MathExpression {
+    private List<MathExpression> children = new ArrayList<>();
+
+    public void add(MathExpression expression) {
+        children.add(expression);
+    }
+
+    @Override
+    public int getResult() {
+        int result = 1;
+        for (MathExpression expression : children) {
+            result *= expression.getResult();
+        }
+        return result;
+    }
+
+    @Override
+    public void setValue(int value) {
+        // No action needed for MultiplyComposite
+    }
+}
